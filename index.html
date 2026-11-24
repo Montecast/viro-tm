@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="da"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="VIRO TM"><meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#2f5f7f">
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png">
+<title>VIRO TM</title>
+<!-- VIRO Consult TM mobil · version 1.1 · 24.11.2026. Indeholder ingen data. Dropbox-appen har kun adgang til sin egen mappe (Apps/VIRO TM mobil JCF): tal hentes fra status.json, registreringer lægges i indbakke/. -->
+<style>
+:root{--acc:#2f5f7f;--acc2:#e8f0f5;--ink:#1d1f20;--mute:#7a7a7d;--line:#e4e1dc;--bg:#f5f3ef;--ok:#2e7d4f;--warn:#b26a00;--bad:#b3261e}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Arial,sans-serif;font-size:15px}
+body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+#app{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
+.hd{padding:14px 16px 8px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.logo{font-weight:700;font-size:17px;white-space:nowrap}.logo b{background:var(--acc);color:#fff;border-radius:4px;padding:0 4px;font-size:11px;margin-left:4px;vertical-align:2px}
+.sync{font-size:11.5px;color:var(--mute);text-align:right;line-height:1.3}.sync a{color:var(--acc)}
+.seg{display:flex;background:#e9e6e0;border-radius:10px;margin:0 16px 10px;padding:3px}.seg button{flex:1;border:0;background:none;font:inherit;font-size:13.5px;padding:8px 0;border-radius:8px;color:#555}.seg .on{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 2px rgba(0,0,0,.08)}
+.body{flex:1;padding:0 14px 8px}
+.card{background:#fff;border-radius:14px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.kn{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.kn b{font-size:15.5px}.kn span{font-size:12px;color:var(--mute);text-align:right}
+.nums{display:flex;gap:10px;margin-top:8px}.nums div{flex:1}.nums small{display:block;font-size:11.5px;color:var(--mute)}.nums strong{font-size:19px}
+.uf{margin-top:8px;font-size:12.5px;border-top:1px solid var(--line);padding-top:7px;display:flex;justify-content:space-between;color:var(--mute)}.uf.w{color:var(--warn)}.uf.r{color:var(--bad)}
+.tot{background:var(--acc);color:#fff}.tot .nums small,.tot .kn span{color:#cfe0ea}
+.btns{position:sticky;bottom:0;display:flex;gap:10px;padding:10px 14px calc(14px + env(safe-area-inset-bottom));background:linear-gradient(rgba(245,243,239,0),var(--bg) 30%)}
+.btn{flex:1;border:0;background:var(--acc);color:#fff;text-align:center;border-radius:14px;padding:15px 0;font:inherit;font-weight:600;font-size:16px}.btn.s{background:#fff;color:var(--acc);border:1.5px solid var(--acc)}.btn:disabled{opacity:.5}
+.lbl{font-size:11.5px;color:var(--mute);margin:14px 2px 6px;text-transform:uppercase;letter-spacing:.04em}
+.chips{display:flex;flex-wrap:wrap;gap:7px}.chip{background:#fff;border:1px solid var(--line);border-radius:18px;padding:8px 13px;font:inherit;font-size:14px;color:var(--ink)}.chip.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+input,select,textarea{font:inherit;font-size:16px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 11px;width:100%;color:var(--ink)}textarea{min-height:70px;resize:vertical}
+.two{display:flex;gap:8px}.two>*{flex:1;min-width:0}
+.note{font-size:12px;color:var(--mute);margin:8px 2px 0;line-height:1.4}
+.top{display:flex;align-items:center;gap:10px;padding:14px 16px 6px}.top button{border:0;background:none;font-size:24px;color:var(--acc);padding:0 6px 0 0}.top b{font-size:17px}
+.leg{background:#fff;border-radius:12px;padding:10px;margin-bottom:7px}.leg .r1{display:flex;gap:8px;align-items:center}.leg .n{width:22px;height:22px;border-radius:50%;background:var(--acc2);color:var(--acc);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.leg .t{flex:1;font-weight:600;font-size:14px}.leg .x{border:0;background:none;color:#999;font-size:18px}.leg .r2{display:flex;gap:6px;margin-top:7px}.leg .r2 input,.leg .r2 select{padding:8px 9px;font-size:15px}.leg .r2 .km{width:84px;flex:none;text-align:right}.leg .r2 select{width:118px;flex:none}
+.msg{margin:0 16px 10px;border-radius:10px;padding:9px 12px;font-size:13px;line-height:1.35}.msg.ok{background:#e5f2ea;color:#1f5b39}.msg.w{background:#fdf3e1;color:#8a5a12}.msg.r{background:#fbe9e7;color:var(--bad)}
+.pend{display:flex;justify-content:space-between;gap:8px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}.pend:last-child{border:0}.pend small{color:var(--mute);display:block}
+a{color:var(--acc)}
+</style></head><body><div id="app"></div>
+<script>
+'use strict';
+const VER='1.0';
+const K={cfg:'vtm-cfg',tok:'vtm-tok',st:'vtm-status',ko:'vtm-ko',sendt:'vtm-sendt'};
+const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+let cfg=ls.get(K.cfg,{appKey:'',sti:'/DATA/SELSKABER/2006- VIRO CONSULT APS/AKTIVITETER/STYRINGSREDSKAB'});
+let tok=ls.get(K.tok,null),st=ls.get(K.st,null),ko=ls.get(K.ko,[]),sendt=ls.get(K.sendt,[]);
+const V={view:'ov',per:'maaned',msg:null,tid:null,tur:null,busy:false};
+const REDIR=location.origin+location.pathname;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const today=()=>iso(new Date());
+const pd=s=>{const [y,m,d]=String(s).split('-').map(Number);return new Date(y,m-1,d)};
+const fmtD=s=>{if(!s)return '';const d=pd(s);return d.getDate()+'.'+(d.getMonth()+1)+'.'};
+const num=v=>{const x=parseFloat(String(v??'').replace(/\s/g,'').replace(',','.'));return isFinite(x)?x:0};
+const h=x=>(Math.round((+x||0)*100)/100).toLocaleString('da-DK',{minimumFractionDigits:1,maximumFractionDigits:2});
+const kr=x=>Math.round(+x||0).toLocaleString('da-DK');
+const kmT=x=>String(Math.round((+x||0)*10)/10).replace('.',',');
+const adrN=s=>String(s||'').trim().toLowerCase().replace(/[.,]/g,' ').replace(/\s+/g,' ');
+const kortAdr=s=>{const p=String(s||'').split(',').map(x=>x.trim()).filter(Boolean);if(!p.length)return '';return p[p.length-1].replace(/^\d{4}\s*/,'')||p[0]};
+const tid2h=(a,b)=>{const m=/^(\d{1,2}):(\d\d)$/;const x=m.exec(a||''),y=m.exec(b||'');if(!x||!y)return 0;const d=(+y[1]*60+ +y[2])-(+x[1]*60+ +x[2]);return d>0?Math.round(d/60*100)/100:0};
+const uidM=()=>'m'+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const OMR={kbh:'Storkbh.',dk:'Øvrige DK',udland:'Udland'};
+function mondayOf(s){const d=pd(s);const w=(d.getDay()+6)%7;d.setDate(d.getDate()-w);return iso(d)}
+function addDays(s,n){const d=pd(s);d.setDate(d.getDate()+n);return iso(d)}
+function isoWeek(s){const d=pd(s);d.setDate(d.getDate()+3-((d.getDay()+6)%7));const w1=new Date(d.getFullYear(),0,4);return 1+Math.round(((d-w1)/864e5-3+((w1.getDay()+6)%7))/7)}
+function perioder(){const t=today(),m=mondayOf(t),d=pd(t);const ms=iso(new Date(d.getFullYear(),d.getMonth(),1)),me=iso(new Date(d.getFullYear(),d.getMonth()+1,0));return {uge:[m,addDays(m,6)],maaned:[ms,me],aar:[t.slice(0,4)+'-01-01',t.slice(0,4)+'-12-31']}}
+const MDR=['januar','februar','marts','april','maj','juni','juli','august','september','oktober','november','december'];
+
+/* ---- Dropbox ---- */
+const b64url=buf=>btoa(String.fromCharCode(...new Uint8Array(buf))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+async function login(){if(!cfg.appKey){vis('r','Skriv App key først.');return}const v=b64url(crypto.getRandomValues(new Uint8Array(48)));sessionStorage.setItem('vtm-pkce',v);const ch=b64url(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v)));
+  location.href='https://www.dropbox.com/oauth2/authorize?'+new URLSearchParams({client_id:cfg.appKey,response_type:'code',code_challenge:ch,code_challenge_method:'S256',token_access_type:'offline',redirect_uri:REDIR})}
+async function loginSvar(){const q=new URLSearchParams(location.search);if(q.get('error')){history.replaceState(null,'',REDIR);vis('r','Dropbox-login blev afbrudt: '+(q.get('error_description')||q.get('error')));return}const code=q.get('code');if(!code)return;
+  const v=sessionStorage.getItem('vtm-pkce');history.replaceState(null,'',REDIR);
+  const r=await fetch('https://api.dropboxapi.com/oauth2/token',{method:'POST',body:new URLSearchParams({code,grant_type:'authorization_code',client_id:cfg.appKey,redirect_uri:REDIR,code_verifier:v||''})});const j=await r.json().catch(()=>({}));
+  if(!r.ok||!j.access_token){vis('r','Login fejlede: '+(j.error_description||j.error||r.status));return}tok={access:j.access_token,exp:Date.now()+((j.expires_in||14400)-60)*1000,refresh:j.refresh_token};ls.set(K.tok,tok);vis('ok','Du er logget ind med Dropbox.')}
+async function access(){if(!tok)throw new Error('login');if(Date.now()<tok.exp)return tok.access;
+  const r=await fetch('https://api.dropboxapi.com/oauth2/token',{method:'POST',body:new URLSearchParams({grant_type:'refresh_token',refresh_token:tok.refresh||'',client_id:cfg.appKey})});const j=await r.json().catch(()=>({}));
+  if(!r.ok||!j.access_token){if(r.status===400||r.status===401){tok=null;ls.del(K.tok);throw new Error('login')}throw new Error('Dropbox svarer ikke')}tok.access=j.access_token;tok.exp=Date.now()+((j.expires_in||14400)-60)*1000;ls.set(K.tok,tok);return tok.access}
+const hdrArg=o=>JSON.stringify(o).replace(/[\u007f-￿]/g,c=>'\\u'+c.charCodeAt(0).toString(16).padStart(4,'0'));
+async function dbx(host,ep,arg,body){const t=await access();const hd={Authorization:'Bearer '+t};let b;
+  if(host==='content'){hd['Dropbox-API-Arg']=hdrArg(arg);if(body!==undefined){hd['Content-Type']='application/octet-stream';b=body}}else{hd['Content-Type']='application/json';b=JSON.stringify(arg)}
+  const r=await fetch('https://'+host+'.dropboxapi.com/2/'+ep,{method:'POST',headers:hd,body:b});
+  if(r.status===401){if(tok){tok.exp=0;ls.set(K.tok,tok)}throw new Error('Dropbox afviste adgangen – log ind igen')}
+  if(r.status===409){const j=await r.json().catch(()=>({}));const e=new Error(j.error_summary||'Dropbox-fejl');e.sum=j.error_summary||'';throw e}
+  if(!r.ok)throw new Error('Dropbox svarede '+r.status);return r}
+const mp=()=>'';
+async function hentStatus(){try{const r=await dbx('content','files/download',{path:mp()+'/status.json'});st=await r.json();ls.set(K.st,st)}catch(e){if(/not_found/.test(e.sum||''))throw new Error('Fandt ikke status.json endnu. Åbn TM på computeren (version 1.54 eller nyere) og gem en ændring – så lægger TM tallene i Dropbox/Apps/VIRO TM mobil JCF. Prøv derefter igen.');throw e}}
+async function sendKo(){for(const e of ko.slice()){await dbx('content','files/upload',{path:mp()+'/indbakke/'+e.id+'.json',mode:'overwrite',mute:true},JSON.stringify(e));ko=ko.filter(x=>x.id!==e.id);ls.set(K.ko,ko);if(!sendt.some(x=>x.id===e.id))sendt.push(e);ls.set(K.sendt,sendt)}}
+async function ryd(){if(!st)return;const B=new Set(st.behandlet||[]);let L=[];
+  try{const r=await dbx('api','files/list_folder',{path:mp()+'/indbakke'});L=((await r.json()).entries||[]).filter(f=>f['.tag']==='file'&&/\.json$/.test(f.name))}catch(e){if(!/not_found/.test(e.sum||''))throw e}
+  const ids=new Set();for(const f of L){const id=f.name.replace(/\.json$/,'');if(B.has(id)){try{await dbx('api','files/delete_v2',{path:f.path_lower||f.path_display})}catch(e){}}else{ids.add(id);if(!sendt.some(x=>x.id===id)){try{const r=await dbx('content','files/download',{path:f.path_lower||f.path_display});const x=await r.json();if(x&&x.id)sendt.push(x)}catch(e){}}}}
+  sendt=sendt.filter(e=>!B.has(e.id)&&ids.has(e.id));ls.set(K.sendt,sendt)}
+async function sync(){if(!tok){render();return}V.busy=true;render();try{await sendKo();await hentStatus();await ryd();if(V.msg&&V.msg.k!=='ok')V.msg=null}catch(e){vis('w',e.message==='login'?'Log ind med Dropbox igen under Opsætning.':(e instanceof TypeError?'Ingen forbindelse':'Ikke forbundet: '+e.message)+(st?' – viser de seneste tal':''))}V.busy=false;render()}
+function vis(k,t){V.msg={k,t};render()}
+
+/* ---- data ---- */
+const ventende=()=>ko.concat(sendt.filter(s=>!ko.some(k=>k.id===s.id)));
+const aftaler=()=>(st&&st.aftaler)||[];
+const aft=id=>aftaler().find(a=>a.id===id);
+const etiket=a=>a?(a.kode||a.kunde):'Ingen kunde';
+function entTimer(e){return e.type==='tid'?(num(e.timer)||tid2h(e.fra,e.til)):0}
+function ruteKm(fra,til){if(!st)return null;const f=adrN(fra),t=adrN(til);const r=(st.ruter||[]).find(r=>(adrN(r.fra)===f&&adrN(r.til)===t)||(adrN(r.fra)===t&&adrN(r.til)===f));return r||null}
+async function gemEntry(e){ko.push(e);ls.set(K.ko,ko);try{if(tok)await sendKo();vis('ok','✓ Lagt i indbakken. Hentes ind, når TM åbnes på computeren.')}catch(err){vis('w','Gemt på telefonen og sendes, når der er forbindelse ('+err.message+').')}V.view='ov';render()}
+
+/* ---- visninger ---- */
+function vOv(){const P=perioder()[V.per];const tw=isoWeek(today());const A=aftaler();const W=ventende();const t=today();
+  const statAlder=st?new Date(st.genereret):null;const alder=statAlder?(statAlder.toLocaleDateString('da-DK',{day:'numeric',month:'numeric'})+' kl. '+statAlder.toLocaleTimeString('da-DK',{hour:'2-digit',minute:'2-digit'})):'';
+  const plus=id=>{const L=W.filter(e=>e.type==='tid'&&e.aftaleId===id&&e.dato>=P[0]&&e.dato<=P[1]);const a=aft(id);const tm=L.reduce((s,e)=>s+entTimer(e),0);return {t:tm,b:tm*((a&&a.timepris)||0)}};
+  let TT=0,TB=0;
+  const kort=A.map(a=>{const tal=(st.idag&&perioder()[V.per][0]===((st.perioder||{})[V.per]||[])[0])?(a.tal||{})[V.per]||{timer:0,beloeb:0}:{timer:0,beloeb:0};const p=plus(a.id);const tm=(tal.timer||0)+p.t,bl=(tal.beloeb||0)+p.b;TT+=tm;TB+=bl;
+    const fp=a.fastpris;const info=fp?'fast pris '+kr(fp.pris):a.timepris?kr(a.timepris)+' kr./t':esc(a.modelTxt||'');
+    const ff=(a.forfaldne||[]);const lin=ff.length?`<div class="uf r"><span>Forfalden faktura ${esc(ff.map(f=>f.nr).join(', '))}</span><span>${kr(ff.reduce((s,f)=>s+f.inkl,0))} kr.</span></div>`:'';
+    const uf=a.ufakt>0?`<div class="uf w"><span>Ikke faktureret</span><span>${kr(a.ufakt)} kr.</span></div>`:'';
+    const ra=a.ramme?`<div class="uf"><span>Brugt af ${h(a.ramme)} t</span><span>${h(a.timerIalt)} t · ${Math.round(a.timerIalt/a.ramme*100)} %</span></div>`:'';
+    return `<div class="card"><div class="kn"><b>${a.nr?'#'+esc(a.nr)+' ':''}${esc(a.kode||a.kunde)}</b><span>${info}</span></div><div class="nums"><div><small>Timer</small><strong>${h(tm)} t</strong></div><div><small>${fp?'Faktureret i alt':'Beløb ex. moms'}</small><strong>${kr(fp?fp.faktureret:bl)}</strong></div></div>${lin}${uf}${ra}${p.t?`<div class="note" style="margin-top:6px">heraf ${h(p.t)} t fra mobilen, ikke godkendt endnu</div>`:''}</div>`}).join('');
+  const navn={uge:'uge '+tw,maaned:MDR[pd(t).getMonth()],aar:t.slice(0,4)}[V.per];
+  const gammel=st&&st.idag&&st.idag!==t;
+  return `<div class="hd"><div class="logo">VIRO Consult<b>TM</b></div><div class="sync">${st?`Tal fra computeren<br>${alder}${W.length?` · <a href="#" onclick="V.view='vent';render();return false">${W.length} venter</a>`:''}`:''}${V.busy?'<br>henter …':''}</div></div>
+   ${V.msg?`<div class="msg ${V.msg.k}">${esc(V.msg.t)}</div>`:''}
+   ${!tok?`<div class="msg w">Ikke logget ind. <a href="#" onclick="V.view='op';render();return false">Opsætning →</a></div>`:''}
+   ${gammel?`<div class="msg w">Tallene er fra ${fmtD(st.idag)}. De opdateres, når TM har været åbent på computeren.</div>`:''}
+   <div class="seg">${[['uge','Uge '+tw],['maaned',MDR[pd(t).getMonth()].replace(/^./,c=>c.toUpperCase())],['aar',t.slice(0,4)]].map(([k,l])=>`<button class="${V.per===k?'on':''}" onclick="V.per='${k}';render()">${l}</button>`).join('')}</div>
+   <div class="body">${st?kort+`<div class="card tot"><div class="kn"><b>I alt ${esc(navn)}</b></div><div class="nums"><div><small>Timer</small><strong>${h(TT)} t</strong></div><div><small>Beløb ex. moms</small><strong>${kr(TB)}</strong></div></div></div>
+    <p class="note" style="text-align:center"><a href="#" onclick="sync();return false">↻ Opdatér</a> · <a href="#" onclick="V.view='op';render();return false">Opsætning</a></p>`:`<div class="card"><b>Ingen tal endnu</b><p class="note">Log ind med Dropbox under Opsætning. Tallene kommer fra TM på computeren.</p></div>`}</div>
+   <div class="btns"><button class="btn" onclick="nyTid()" ${st?'':'disabled'}>+ Tid</button><button class="btn s" onclick="nyTur()" ${st?'':'disabled'}>+ Kørsel</button></div>`}
+function nyTid(){const A=aftaler();V.tid={aftaleId:(ls.get('vtm-sidst','')&&aft(ls.get('vtm-sidst','')))?ls.get('vtm-sidst',''):(A[0]||{}).id,dato:today(),fra:'',til:'',timer:'',spor:'',tekst:''};V.msg=null;V.view='tid';render()}
+function vTid(){const T=V.tid,a=aft(T.aftaleId);const hh=num(T.timer)||tid2h(T.fra,T.til);
+  return `<div class="top"><button onclick="V.view='ov';render()">‹</button><b>Registrér tid</b></div>${V.msg?`<div class="msg ${V.msg.k}">${esc(V.msg.t)}</div>`:''}<div class="body">
+   <div class="lbl">Kunde</div><div class="chips">${aftaler().map(x=>`<button class="chip ${x.id===T.aftaleId?'on':''}" onclick="V.tid.aftaleId='${esc(x.id)}';V.tid.spor='';render()">${esc(etiket(x))}</button>`).join('')}</div>
+   <div class="lbl">Dato</div><input type="date" value="${esc(T.dato)}" onchange="V.tid.dato=this.value">
+   <div class="lbl">Fra – til</div><div class="two"><input type="time" value="${esc(T.fra)}" oninput="V.tid.fra=this.value" onchange="V.tid.fra=this.value;render()"><input type="time" value="${esc(T.til)}" oninput="V.tid.til=this.value" onchange="V.tid.til=this.value;render()"></div>
+   <div class="two" style="margin-top:8px;align-items:center"><span class="note" style="margin:0">eller antal timer</span><input inputmode="decimal" placeholder="fx 1,5" value="${esc(T.timer)}" oninput="V.tid.timer=this.value" onchange="V.tid.timer=this.value;render()"></div>
+   <p class="note">${hh?'= '+h(hh)+' t'+(a&&a.timepris?' · '+kr(hh*a.timepris)+' kr.':''):''}</p>
+   ${a&&a.spor&&a.spor.length?`<div class="lbl">Spor</div><div class="chips">${a.spor.map(s=>`<button class="chip ${String(T.spor)===String(s.kode)?'on':''}" title="${esc(s.navn)}" onclick="V.tid.spor=V.tid.spor==='${esc(s.kode)}'?'':'${esc(s.kode)}';render()">${esc(s.kode)}</button>`).join('')}</div>${T.spor?`<p class="note">${esc((a.spor.find(s=>String(s.kode)===String(T.spor))||{}).navn||'')}</p>`:''}`:''}
+   <div class="lbl">Tekst</div><textarea placeholder="Hvad har du lavet?" oninput="V.tid.tekst=this.value">${esc(T.tekst)}</textarea>
+  </div><div class="btns"><button class="btn" onclick="gemTid()">Gem</button></div>`}
+function gemTid(){const T=V.tid;if(!aft(T.aftaleId))return vis('r','Vælg en kunde.');if(!T.dato)return vis('r','Vælg en dato.');const hh=num(T.timer)||tid2h(T.fra,T.til);if(!(hh>0))return vis('r','Skriv fra og til – eller antal timer.');if(!String(T.tekst).trim())return vis('r','Skriv hvad du har lavet.');
+  ls.set('vtm-sidst',T.aftaleId);gemEntry({v:1,id:uidM(),type:'tid',oprettet:new Date().toISOString(),dato:T.dato,aftaleId:T.aftaleId,fra:num(T.timer)?'':T.fra,til:num(T.timer)?'':T.til,timer:num(T.timer)?Math.round(num(T.timer)*100)/100:'',spor:T.spor,tekst:String(T.tekst).trim()})}
+function nyTur(){V.tur={dato:today(),start:(st&&st.start)||'',ben:[]};V.msg=null;V.view='tur';render()}
+const benFra=i=>i?V.tur.ben[i-1].til:V.tur.start;
+function tilfoej(id){const T=V.tur,fra=benFra(T.ben.length);let b;
+  if(id==='hjem'){const l=T.ben[T.ben.length-1];b={aftaleId:l?l.aftaleId:'',navn:'Hjem',til:T.start,km:'',omraade:l?l.omraade:'kbh',formaal:'Hjemkørsel'}}
+  else if(id==='anden'){b={aftaleId:'',navn:'Anden adresse',til:'',km:'',omraade:'kbh',formaal:'Kørsel'}}
+  else{const a=aft(id);b={aftaleId:id,navn:etiket(a),til:a.adresse||'',km:'',omraade:'kbh',formaal:'Møde hos '+(a.kunde||a.kode)}}
+  const r=b.til&&ruteKm(fra,b.til);if(r){b.km=kmT(r.km);if(r.omraade)b.omraade=r.omraade}T.ben.push(b);render()}
+function benSet(i,k,v){const b=V.tur.ben[i];b[k]=v;if(k==='til'){const r=ruteKm(benFra(i),v);if(r&&!b.km){b.km=kmT(r.km);render()}}}
+function vTur(){const T=V.tur;const tot=T.ben.reduce((s,b)=>s+num(b.km),0);
+  return `<div class="top"><button onclick="V.view='ov';render()">‹</button><b>Kørsel</b></div>${V.msg?`<div class="msg ${V.msg.k}">${esc(V.msg.t)}</div>`:''}<div class="body">
+   <div class="two"><div><div class="lbl" style="margin-top:4px">Dato</div><input type="date" value="${esc(T.dato)}" onchange="V.tur.dato=this.value"></div></div>
+   <div class="lbl">Start</div><input value="${esc(T.start)}" placeholder="Startadresse" oninput="V.tur.start=this.value">
+   <div class="lbl">Stop</div>${T.ben.length?'':'<p class="note" style="margin-top:0">Tryk kunderne i den rækkefølge, du kører – og Hjem til sidst.</p>'}
+   ${T.ben.map((b,i)=>`<div class="leg"><div class="r1"><span class="n">${b.navn==='Hjem'?'⌂':i+1}</span><span class="t">${esc(b.navn)}</span><a class="note" style="margin:0" href="https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(benFra(i))}&destination=${encodeURIComponent(b.til)}&travelmode=driving" target="_blank">kort ↗</a><button class="x" onclick="V.tur.ben.splice(${i},1);render()">✕</button></div>
+     <div class="r2"><input value="${esc(b.til)}" placeholder="Adresse" oninput="V.tur.ben[${i}].til=this.value" onchange="benSet(${i},'til',this.value)"></div><div class="r2"><select onchange="benSet(${i},'omraade',this.value)">${Object.entries(OMR).map(([k,v])=>`<option value="${k}" ${b.omraade===k?'selected':''}>${v}</option>`).join('')}</select><input value="${esc(b.formaal)}" placeholder="Formål" onchange="benSet(${i},'formaal',this.value)"><input class="km" inputmode="decimal" placeholder="km" value="${esc(b.km)}" oninput="V.tur.ben[${i}].km=this.value" onchange="benSet(${i},'km',this.value);render()"></div></div>`).join('')}
+   <div class="chips" style="margin-top:6px">${aftaler().map(a=>`<button class="chip" onclick="tilfoej('${esc(a.id)}')">+ ${esc(etiket(a))}</button>`).join('')}<button class="chip" onclick="tilfoej('anden')">+ Anden adresse</button>${T.ben.length?'<button class="chip" onclick="tilfoej(\'hjem\')">+ Hjem</button>':''}</div>
+   <p class="note">Km for kendte strækninger hentes fra TM. Ny strækning: tryk "kort ↗" og skriv km.</p>
+   <div class="card" style="margin-top:10px;display:flex;justify-content:space-between"><b>I alt</b><b>${kmT(tot)} km</b></div>
+  </div><div class="btns"><button class="btn" onclick="gemTur()" ${T.ben.length?'':'disabled'}>Gem tur</button></div>`}
+function gemTur(){const T=V.tur;if(!T.dato)return vis('r','Vælg en dato.');if(!String(T.start).trim())return vis('r','Skriv startadressen.');if(!T.ben.length)return vis('r','Tilføj mindst ét stop.');
+  for(let i=0;i<T.ben.length;i++){const b=T.ben[i];if(!String(b.til).trim())return vis('r','Stop '+(i+1)+': skriv adressen.');if(!(num(b.km)>0))return vis('r','Stop '+(i+1)+': skriv km.')}
+  gemEntry({v:1,id:uidM(),type:'tur',oprettet:new Date().toISOString(),dato:T.dato,start:String(T.start).trim(),ben:T.ben.map(b=>({aftaleId:b.aftaleId,til:String(b.til).trim(),km:Math.round(num(b.km)*10)/10,omraade:b.omraade,formaal:String(b.formaal||'').trim()}))})}
+function vVent(){const W=ventende();return `<div class="top"><button onclick="V.view='ov';render()">‹</button><b>Venter på computeren</b></div><div class="body"><div class="card">${W.length?W.map(e=>`<div class="pend"><div>${fmtD(e.dato)} · ${e.type==='tid'?esc(etiket(aft(e.aftaleId)))+' · '+h(entTimer(e))+' t':'Kørsel · '+kmT(e.ben.reduce((s,b)=>s+num(b.km),0))+' km'}<small>${esc(e.type==='tid'?e.tekst:[kortAdr(e.start)].concat(e.ben.map(b=>b.navn||kortAdr(b.til))).join(' → '))}${ko.some(k=>k.id===e.id)?' · ikke sendt endnu':''}</small></div><button class="chip" onclick="fortryd('${esc(e.id)}')">Fortryd</button></div>`).join(''):'<p class="note">Intet venter.</p>'}</div>
+   <p class="note">Registreringerne hentes ind og godkendes i TM på computeren. Bagefter forsvinder de herfra.</p></div>`}
+async function fortryd(id){if(!confirm('Fortryd registreringen?'))return;if(ko.some(k=>k.id===id)){ko=ko.filter(k=>k.id!==id);ls.set(K.ko,ko)}else{try{await dbx('api','files/delete_v2',{path:mp()+'/indbakke/'+id+'.json'})}catch(e){if(!/not_found/.test(e.sum||'')){vis('r','Kunne ikke fortryde: '+e.message);return}}}sendt=sendt.filter(s=>s.id!==id);ls.set(K.sendt,sendt);render()}
+function vOp(){return `<div class="top"><button onclick="V.view='ov';render()">‹</button><b>Opsætning</b></div>${V.msg?`<div class="msg ${V.msg.k}">${esc(V.msg.t)}</div>`:''}<div class="body">
+  <div class="lbl">Dropbox App key</div><input id="o_key" value="${esc(cfg.appKey)}" autocapitalize="off" autocorrect="off" spellcheck="false">
+  <p class="note">Appen har kun adgang til mappen Apps/VIRO TM mobil JCF i din Dropbox – ikke resten af din Dropbox.</p>
+  <div style="margin-top:14px"><button class="btn" style="width:100%" onclick="gemOp(true)">${tok?'Gem og log ind igen':'Gem og log ind med Dropbox'}</button></div>
+  ${tok?`<div style="margin-top:10px"><button class="btn s" style="width:100%" onclick="gemOp(false)">Gem uden at logge ind igen</button></div><p class="note" style="text-align:center"><a href="#" onclick="logud();return false">Log ud af Dropbox på denne telefon</a></p>`:''}
+  <p class="note">Version ${VER}. Siden gemmer intet om dine kunder på nettet. Tallene ligger kun i din Dropbox og i telefonens hukommelse.</p></div>`}
+function gemOp(log){cfg={appKey:$('o_key').value.trim(),sti:''};ls.set(K.cfg,cfg);if(log)login();else{V.view='ov';sync()}}
+function logud(){if(!confirm('Log ud af Dropbox på denne telefon?'))return;tok=null;ls.del(K.tok);ls.del(K.st);st=null;render()}
+function render(){const f={ov:vOv,tid:vTid,tur:vTur,vent:vVent,op:vOp}[V.view]||vOv;$('app').innerHTML=f()}
+(async()=>{render();try{await loginSvar()}catch(e){vis('r','Login fejlede: '+e.message)}if(!tok&&!cfg.appKey)V.view='op';render();sync()})();
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&V.view==='ov')sync()});
+</script></body></html>
