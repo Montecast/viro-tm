@@ -7,7 +7,7 @@
 <meta name="theme-color" content="#2f5f7f">
 <link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png">
 <title>VIRO TM</title>
-<!-- VIRO Consult TM mobil · version 1.1 · 24.11.2026. Indeholder ingen data. Dropbox-appen har kun adgang til sin egen mappe (Apps/VIRO TM mobil JCF): tal hentes fra status.json, registreringer lægges i indbakke/. -->
+<!-- VIRO Consult TM mobil · version 1.2 · 25.11.2026. Indeholder ingen data. Dropbox-appen har kun adgang til sin egen mappe (Apps/VIRO TM mobil JCF): tal hentes fra status.json, registreringer lægges i indbakke/. -->
 <style>
 :root{--acc:#2f5f7f;--acc2:#e8f0f5;--ink:#1d1f20;--mute:#7a7a7d;--line:#e4e1dc;--bg:#f5f3ef;--ok:#2e7d4f;--warn:#b26a00;--bad:#b3261e}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -40,7 +40,7 @@ a{color:var(--acc)}
 </style></head><body><div id="app"></div>
 <script>
 'use strict';
-const VER='1.0';
+const VER='1.2';
 const K={cfg:'vtm-cfg',tok:'vtm-tok',st:'vtm-status',ko:'vtm-ko',sendt:'vtm-sendt'};
 const ls={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
 let cfg=ls.get(K.cfg,{appKey:'',sti:'/DATA/SELSKABER/2006- VIRO CONSULT APS/AKTIVITETER/STYRINGSREDSKAB'});
@@ -110,13 +110,13 @@ async function gemEntry(e){ko.push(e);ls.set(K.ko,ko);try{if(tok)await sendKo();
 function vOv(){const P=perioder()[V.per];const tw=isoWeek(today());const A=aftaler();const W=ventende();const t=today();
   const statAlder=st?new Date(st.genereret):null;const alder=statAlder?(statAlder.toLocaleDateString('da-DK',{day:'numeric',month:'numeric'})+' kl. '+statAlder.toLocaleTimeString('da-DK',{hour:'2-digit',minute:'2-digit'})):'';
   const plus=id=>{const L=W.filter(e=>e.type==='tid'&&e.aftaleId===id&&e.dato>=P[0]&&e.dato<=P[1]);const a=aft(id);const tm=L.reduce((s,e)=>s+entTimer(e),0);return {t:tm,b:tm*((a&&a.timepris)||0)}};
-  let TT=0,TB=0;
-  const kort=A.map(a=>{const tal=(st.idag&&perioder()[V.per][0]===((st.perioder||{})[V.per]||[])[0])?(a.tal||{})[V.per]||{timer:0,beloeb:0}:{timer:0,beloeb:0};const p=plus(a.id);const tm=(tal.timer||0)+p.t,bl=(tal.beloeb||0)+p.b;TT+=tm;TB+=bl;
+  let TT=0,TU=0,TB=0;
+  const kort=A.map(a=>{const tal=(st.idag&&perioder()[V.per][0]===((st.perioder||{})[V.per]||[])[0])?(a.tal||{})[V.per]||{timer:0,beloeb:0}:{timer:0,beloeb:0};const p=plus(a.id);const tu=(tal.timer||0)+p.t,tm=(tal.fakt!=null?tal.fakt:(tal.timer||0))+p.t,bl=(tal.beloeb||0)+p.b;TT+=tm;TU+=tu;TB+=bl;
     const fp=a.fastpris;const info=fp?'fast pris '+kr(fp.pris):a.timepris?kr(a.timepris)+' kr./t':esc(a.modelTxt||'');
     const ff=(a.forfaldne||[]);const lin=ff.length?`<div class="uf r"><span>Forfalden faktura ${esc(ff.map(f=>f.nr).join(', '))}</span><span>${kr(ff.reduce((s,f)=>s+f.inkl,0))} kr.</span></div>`:'';
     const uf=a.ufakt>0?`<div class="uf w"><span>Ikke faktureret</span><span>${kr(a.ufakt)} kr.</span></div>`:'';
     const ra=a.ramme?`<div class="uf"><span>Brugt af ${h(a.ramme)} t</span><span>${h(a.timerIalt)} t · ${Math.round(a.timerIalt/a.ramme*100)} %</span></div>`:'';
-    return `<div class="card"><div class="kn"><b>${a.nr?'#'+esc(a.nr)+' ':''}${esc(a.kode||a.kunde)}</b><span>${info}</span></div><div class="nums"><div><small>Timer</small><strong>${h(tm)} t</strong></div><div><small>${fp?'Faktureret i alt':'Beløb ex. moms'}</small><strong>${kr(fp?fp.faktureret:bl)}</strong></div></div>${lin}${uf}${ra}${p.t?`<div class="note" style="margin-top:6px">heraf ${h(p.t)} t fra mobilen, ikke godkendt endnu</div>`:''}</div>`}).join('');
+    return `<div class="card"><div class="kn"><b>${a.nr?'#'+esc(a.nr)+' ':''}${esc(a.kode||a.kunde)}</b><span>${info}</span></div><div class="nums"><div><small>Fakt. timer</small><strong>${h(tm)} t</strong>${Math.abs(tu-tm)>0.004?`<small>udført ${h(tu)} t</small>`:''}</div><div><small>${fp?'Faktureret i alt':'Beløb ex. moms'}</small><strong>${kr(fp?fp.faktureret:bl)}</strong></div></div>${lin}${uf}${ra}${p.t?`<div class="note" style="margin-top:6px">heraf ${h(p.t)} t fra mobilen, ikke godkendt endnu</div>`:''}</div>`}).join('');
   const navn={uge:'uge '+tw,maaned:MDR[pd(t).getMonth()],aar:t.slice(0,4)}[V.per];
   const gammel=st&&st.idag&&st.idag!==t;
   return `<div class="hd"><div class="logo">VIRO Consult<b>TM</b></div><div class="sync">${st?`Tal fra computeren<br>${alder}${W.length?` · <a href="#" onclick="V.view='vent';render();return false">${W.length} venter</a>`:''}`:''}${V.busy?'<br>henter …':''}</div></div>
@@ -124,7 +124,7 @@ function vOv(){const P=perioder()[V.per];const tw=isoWeek(today());const A=aftal
    ${!tok?`<div class="msg w">Ikke logget ind. <a href="#" onclick="V.view='op';render();return false">Opsætning →</a></div>`:''}
    ${gammel?`<div class="msg w">Tallene er fra ${fmtD(st.idag)}. De opdateres, når TM har været åbent på computeren.</div>`:''}
    <div class="seg">${[['uge','Uge '+tw],['maaned',MDR[pd(t).getMonth()].replace(/^./,c=>c.toUpperCase())],['aar',t.slice(0,4)]].map(([k,l])=>`<button class="${V.per===k?'on':''}" onclick="V.per='${k}';render()">${l}</button>`).join('')}</div>
-   <div class="body">${st?kort+`<div class="card tot"><div class="kn"><b>I alt ${esc(navn)}</b></div><div class="nums"><div><small>Timer</small><strong>${h(TT)} t</strong></div><div><small>Beløb ex. moms</small><strong>${kr(TB)}</strong></div></div></div>
+   <div class="body">${st?kort+`<div class="card tot"><div class="kn"><b>I alt ${esc(navn)}</b></div><div class="nums"><div><small>Fakt. timer</small><strong>${h(TT)} t</strong>${Math.abs(TU-TT)>0.004?`<small>udført ${h(TU)} t</small>`:''}</div><div><small>Beløb ex. moms</small><strong>${kr(TB)}</strong></div></div></div>
     <p class="note" style="text-align:center"><a href="#" onclick="sync();return false">↻ Opdatér</a> · <a href="#" onclick="V.view='op';render();return false">Opsætning</a></p>`:`<div class="card"><b>Ingen tal endnu</b><p class="note">Log ind med Dropbox under Opsætning. Tallene kommer fra TM på computeren.</p></div>`}</div>
    <div class="btns"><button class="btn" onclick="nyTid()" ${st?'':'disabled'}>+ Tid</button><button class="btn s" onclick="nyTur()" ${st?'':'disabled'}>+ Kørsel</button></div>`}
 function nyTid(){const A=aftaler();V.tid={aftaleId:(ls.get('vtm-sidst','')&&aft(ls.get('vtm-sidst','')))?ls.get('vtm-sidst',''):(A[0]||{}).id,dato:today(),fra:'',til:'',timer:'',spor:'',tekst:''};V.msg=null;V.view='tid';render()}
